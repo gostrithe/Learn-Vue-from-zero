@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script>
+        /* 事件修饰符: stop, prevent, capture, self, once, passive */
+        const app = Vue.createApp({
+            data() {
+                return {
+                    counter: 0
+                }
+            },
+            methods: {
+                /* btnHandler(event) {  // 事件监听函数，第一个参数默认自动传入event事件对象
+                    console.log(event.target);
+                    this.counter++;
+                } */
+                // 当我们也想接收参数时候，也想接收event时候，可以手动传入 $event
+                btnHandler(n, event) { 
+                    console.log(event.target);
+                    this.counter += n
+                },
+                btnHandler2() { 
+                    alert('btnHandler2()')
+                },
+
+                divHandler() {
+                    console.log('divHandler()');
+                }
+
+            },
+                        
+            template: // 可以传参，直接()传入就行
+                      // 手动传入 $event
+                      // 如果想要在按钮点击事件上绑定两个执行函数，则用逗号隔开，且必须接上()调用
+            `
+                <div @click.self='divHandler'>
+                    {{ counter }}
+                    <button @click='btnHandler(10, $event), btnHandler2()'>button</button>
+                    <button @click.stop='btnHandler(10, $event), btnHandler2()'>button</button>
+                </div>
+            `
+
+            // 也有事件传播机制，点击button后会冒泡到div
+            // ##修饰符 .stop 可以阻止事件传播(冒泡)相当e.stopPropagation()
+                    // .self 只有点击的是self本身才会触发事件，点击子元素不会触发，相当e.target === div
+                    // .prevent 阻止事件的默认行为 相当e.preventDefault()
+                    // .capture 使用捕获 相当 useCapture = true
+                    // .once 只执行一次 
+
+                    // @scroll.passive 可以提高移动端的性能
+                    // <!-- 滚动事件的默认行为 (scrolling) 将立即发生而非等待 `onScroll` 完成 -->
+                    // <!-- 以防其中包含 `event.preventDefault()` -->
+                    // <div @scroll.passive="onScroll">...</div>
+                        // 就是说，当滚轮滚动，监听到了，我马上执行默认事件scrolling，页面滚动。
+                            // -- 鼠标一滚，页面直接滚动。而不是等handler执行完再触发默认的页面滚动
+                        // 还可以防止handler里面阻止默认的页面滚动。先于你handler执行默认滚动，我已经滚了，你阻止不了。
+        })
+
+        app.mount('#root')
+    </script>
+
+    <script>
+        /* 按键修饰符：enter, tab, delete, esc, up, down, left, right */
+            // -- 按下对应键时 才会执行handler
+        /* 鼠标修饰符: left, right, middle */
+            // -- 鼠标左键、右键、中键
+        /* 精确修饰符：exact */
+            // @click.ctrl.exact 精确匹配，只有当按住ctrl唯一一个键，且点击了才执行handler。
+            // @click.ctrl 按住ctrl 同时再按住其他键 再点击，也能执行handler
+    </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    classString: 'red',
+                    classObject: { red: false, gren: true },  // 通过对象加类名，键为类名值为是否添加
+                    classArray: ['red', 'green', {brown: true}],  // 通过数组加类名们，可以嵌套对象方式使用
+
+                    // 行内样式的添加
+                    styleString: 'color: yellow; background: blue;',
+                    styleObjext: {  // 推荐
+                        color: 'pink',
+                        background: 'skyblue'
+                    }
+                }
+            },
+            template: `
+                <div :style='styleObjext'> heyhey </div>
+
+                <demo :class='classString' />
+            `
+        })
+
+        app.component('demo', {
+            // $attrs.class 可以拿到<demo :class='classString' />中的'red'
+            template: `
+                <div :class='$attrs.class'> component1 </div>
+                <div :class='$attrs.class'> component2 </div>
+            `
+        })
+
+        const vm = app.mount('#root')
+    </script>  
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+</body>
+</html>

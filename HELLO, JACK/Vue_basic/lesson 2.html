@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <div id="box"></div>
+
+
+    <script>
+        Vue.createApp({
+            data() {
+                return {
+                    content: 'hello jack'
+                };
+            },
+            methods: {  // methods方法们，方法写在这里
+                handleBtnClick() {
+                    this.content = this.content.split('').reverse().join('');
+                }
+            },
+            template:  // v-on:click 绑定了点击事件，触发执行handleBtnClick函数
+                `<div>
+                    {{ content }}
+                    <button v-on:click='handleBtnClick'>reverse</button>  
+                </div>
+                `
+        }).mount('#root')
+    </script>
+    <script>
+        Vue.createApp({
+            data () {
+                return {
+                    show: true
+                }
+            },
+            methods: {
+                handler() {
+                    this.show = !this.show
+                }
+            },
+            template:  // v-if 指令，如果值为true没什么变化，如果为false则该元素隐藏消失不存在
+                `
+                    <span v-if='show'>You can see me!</span>
+                    <button v-on:click='handler'>show/hide</button>
+                `
+        }).mount('#box')
+    </script>
+</body>
+
+</html>

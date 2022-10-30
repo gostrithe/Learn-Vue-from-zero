@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    show: false,
+
+                    condition: true,
+                };
+            },
+
+            // v-show 为false的话，没有删除DOM元素，而是display: none;隐藏
+            // v-if 为false的话，直接删除DOM元素 丢个你一个绿油油的东西 <!--v-if-->
+            // v-if 后面也可以接v-else-if和v-else
+            template: `
+                <div v-show='show'>v-show</div>
+
+                <div v-if='show'>v-if</div>
+                <div v-else-if='condition'>v-else-if</div>
+                <div v-else>v-else</div>
+            `
+        });
+
+        app.mount('#root')
+
+
+    </script>
+</body>
+
+</html>

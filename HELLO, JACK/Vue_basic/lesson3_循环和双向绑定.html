@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script>
+        Vue.createApp({
+            data() {
+                return {
+                    inputValue: '',
+                    list: [00, 11, 22, 33]
+                };
+            },
+            methods: {
+                handler() {
+                    this.list.push(this.inputValue);
+                    this.inputValue = '';
+                }
+            },
+            template:  // v-for='(item, index) of list' 循环list数组，拿到每一项item和index，生成对应循环次数的元素们
+                       // v-model 双向绑定inputValue这个变量，我变则你变，你变则我变
+            `
+            <div>
+                <input type="text" v-model='inputValue'>
+                <button v-on:click='handler'>add</button>
+                <ul>
+                    <li v-for='(item, index) of list'>{{ item }} {{ index }}</li>
+                </ul>
+            </div>
+            `
+        }).mount('#root')
+    </script>
+</body>
+
+</html>

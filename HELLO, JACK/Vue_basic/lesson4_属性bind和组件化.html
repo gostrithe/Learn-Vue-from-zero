@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script>
+        const app = Vue.createApp({  // 接收app实例
+            data() {
+                return {
+                    inputValue: '',
+                    list: []
+                };
+            },
+            methods: {
+                handler() {
+                    this.list.push(this.inputValue);
+                    this.inputValue = '';
+                }
+            },
+            template:  // v-bind动态绑定属性，属性值可以动态变化，否则属性值默认就是死的字符串
+            `
+            <div>
+                <input type="text" v-model='inputValue'>
+                <button v-on:click='handler'>add</button>
+                <ul>
+                    <todo-item 
+                        v-for='(item, index) of list' 
+
+                        v-bind:content='item' 
+                        v-bind:index='index'
+                    />
+                </ul>
+            </div>
+            `
+        })
+        
+        // 搞一个组件component 名曰todo-item 
+        app.component('todo-item', {
+            props: ['content', 'index'],   // props可以接收写在app里面的属性
+            template: '<li>{{index}} -- {{content}}</li>'
+        })
+
+        app.mount('#root')  //最后再挂载到根元素
+    </script>
+</body>
+
+</html>

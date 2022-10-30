@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script>
+        /* 
+            {{}}  插值表达式： 里面写js表达式
+
+            v-html   通过html的方式，相当于div.innerHTML = massege
+            template: `<div v-html='massege'></div>`
+
+            v-bind   动态绑定一个属性
+            template: `<input v-bind:disabled='disable'/>`
+
+            v-once   只渲染一次，数据再次发生变化，将不作理会
+            template: `<div v-once>{{ massege }}</div>`
+
+            v-if     是否展示元素
+            template: `<div v-if='show'>{{ massege }}</div>`
+
+            v-on     事件绑定，注意方法写到methods里面
+            template: `<div v-on:click='handlerClick'>{{ massege }}</div>`
+            
+            简写情况：
+                v-on:click='handlerClick'  -->  @click='handlerClick'
+                v-bind:title='content'  -->  :title='content'
+
+            动态属性： 动态参数
+                [变量（属性名）]
+                @[eventName]='handlerClick'
+                :[property]='content'
+
+            
+            修饰符：
+                prevent 修饰符，阻止事件的默认行为
+                @click.prevent='handle'  表示先阻止点击事件的默认行为，再执行handle函数
+        */
+    </script>
+</body>
+</html>

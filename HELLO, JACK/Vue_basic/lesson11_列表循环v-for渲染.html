@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    imageSrc: 'baidu.com',
+                    listArray: ['jack', 'seven', 'black'],
+                    listObject: { name: 'jack', age: 22, lolRank: 'master' }
+                };
+            },
+
+            // 循环渲染同一标签，可以绑定唯一的key值，让底层知道，不用再渲染已经存在且没发生变化的元素。
+            // 数组发生变化时候，重新渲染，
+            // 可以使用数组原地操作api、或者直接替换数组
+            template: `
+                <ul>
+                    <li v-for='(item, index) in listArray' :key='index'>{{ item }} -- {{ index }}</li>
+                    <li v-for='(value, key, index) in listObject' :key='key'>{{ key }} -- {{ value }} -- {{ index }}</li>
+                </ul>
+
+                <div v-for='item in 7'>{{ item }}</div>
+
+                <template v-for='(item, index) in listArray' :key='index'>
+                    <div v-if='item !== "seven"'>{{ item }} -- {{ index }}</div>
+                </template>
+
+                <ul>
+                    <div v-for='(item, index) in listArray' :key='index'>
+                        <li v-if='item !=="seven"'>{{ item }} -- {{ index }}</li>
+                    </div>
+                </ul>
+            `
+            // 神奇的是，还可以循环一个数字！！
+            
+            // @@@@@@@@@@@@@@@@@
+            // v-for优先级会比v-if优先级高，想要在同一标签循环的时候做if判断是不行的，
+            // 可以在for循环标签内嵌套一层标签用来做判断，但是这样就会多出外层没用的标签
+            // 正确的做法，使用template占位！！！
+        });
+
+        app.mount('#root')
+        
+    </script>
+
+</body>
+
+</html>

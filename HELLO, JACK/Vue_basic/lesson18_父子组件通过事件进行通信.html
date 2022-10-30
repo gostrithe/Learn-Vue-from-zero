@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/3.2.40/vue.global.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <hr>
+    <div id="root2"></div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    count: 1
+                };
+            },
+            methods: {
+                handlerAddone(pram, pram2) {  // 触发事件时，可以结束到子组件传递的参数
+                    this.count++;
+                    console.log(pram, pram2);
+                }
+            },
+            template: // 父组件可以监听到子组件发射出来的事件
+                `
+                <div>
+                    <counter :count='count' @add-one='handlerAddone' />
+                </div>
+            `
+        });
+
+        app.component('counter', {
+            props: ['count'],
+            // emits: ['addTen', 'add'],  // emits声明子组件会向外发射出去的事件，发射了没声明的事件时，就会黄色警告
+            /* 同样发射事件时候也可以进行校验 */
+            emits: {
+                addOne: (pram, pram2) => {  // 返回值为true则通过校验，否则黄色警告
+                    if (pram > 0 && pram2 < 0) { // 这里是判断传出去的参数是否通过检验
+                        return true;
+                    }
+                    return false;
+                }
+            },
+            methods: {
+                handleClick() {
+                    this.$emit('addOne', 2, 6);  // 向外发出一个addOne事件, 也可以传递参数
+                }
+            },
+            template:
+                `
+                <div @click='handleClick'>{{count}}</div>
+            `
+        });
+
+        const vm = app.mount('#root')
+    </script>
+
+    <script>
+        /* 高级玩法： 组件的v-model双向绑定 */
+        const app2 = Vue.createApp({
+            data() {
+                return {
+                    count: 1  // update:modelValue事件触发后，count会跟着变化
+                };
+            },
+            // template: 
+            //     `
+            //     <div>
+            //         <counterSenior v-model:myValue='count' />
+            //     </div>
+            // `
+            template:
+                `
+                <div>
+                    <counterSenior v-model='count' />
+                </div>
+            `
+        });
+
+        app2.component('counterSenior', {
+            // props: ['myValue'],
+            props: ['modelValue'],  // 接收modelValue是固定写法，表示v-model绑定的值，这里相当与接收了count的值
+            methods: {
+                handleClick() {
+                    // this.$emit('update:myValue', this.myValue + 100);
+                    this.$emit('update:modelValue', this.modelValue + 10);  // 发射事件也是固定写法，update:modelValue事件多一个空格也不行！！！
+                                                                            // 表示当modelValue的值发生更新时事件。
+                    // 相当于点击div后，发射事件update:modelValue，且传递参数。
+                    // v-model会自动监听事件update:modelValue，
+                    // 执行事件 update:modelValue(11) 
+                        // 传递进来的参数即是更新后的modelValue ==> modelValue = 11
+                        // 由于count和modelValue是双向绑定的 ==> { count <==> modelValue <==> 11(传递进来的参数) }
+                }
+            },
+            template:
+            `
+                <div @click='handleClick'>{{modelValue}}</div>
+            `
+        });
+
+        const vm2 = app2.mount('#root2')
+    </script>
+</body>
+
+</html>

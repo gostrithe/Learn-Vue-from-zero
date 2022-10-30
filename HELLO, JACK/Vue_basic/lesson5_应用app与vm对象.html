@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script>
+        // createApp创建一个Vue应用， 传入的参数对象为应用最外层的组件应该如何展示
+        // MVVM设计模式， m -> model 数据，v -> view 视图，vm -> viewModel 视图数据连接层
+        const app = Vue.createApp({
+            data() {
+                return {
+                    message: 'hello world'
+                };
+            },
+            template: '<div>{{ message }}</div>'
+        });
+
+        // 这里vm就是 vue应用的根组件，意思是由应用的根组件自动进行视图数据的连接
+        const vm = app.mount('#root')
+        // 拿到vm对象可以做一些操作
+        vm.$data.message = 'hacked by jack'
+    </script>
+</body>
+
+</html>

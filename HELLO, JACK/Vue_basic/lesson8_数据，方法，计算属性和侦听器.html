@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script>
+        /* 计算属性computed  侦听器watcher */
+        const app = Vue.createApp({  // 里面的this指向vm对象
+            data() {
+                return {
+                    count: 2,
+                    price: 7,
+                    // total: this.count*this.price 输出NaN不能在data里面这样计算，这时候就有计算属性computed
+                };
+            },
+            watch: {  // 可以监听数据中的变量，当数据发生变化是，执行函数，可以用来解决一些异步操作
+                price(currentValue, previousValue) {  // 自动入了两个参数，表示变化后的值和变化前的值
+                    console.log('监听到price发生了变化');
+                    console.log(currentValue, previousValue);
+                }
+            },
+            computed: {  // 计算属性 
+                total() {   // 注意虽然这里是函数的形式，但是引用的时候不用写()，直接把函数名当做计算好了的属性使用
+                    return this.count * this.price;
+                    // return Date.now() + this.price 这里依赖着this.price，this.price变化时候才会重新执行计算
+                }
+                // 感觉就像是 total: 计算好了的返回值
+            },
+            methods: {
+                getTotal() {
+                    return this.count * this.price;
+                }
+            },
+            template:
+                `<div>计算属性total -- {{ total }}</div>
+                 <div>调用methods里的getTotal方法getTotal() -- {{ getTotal() }}</div>
+                `
+        });
+
+        const vm = app.mount('#root')
+        // vm.$data.price = 777   ===  vm.price = 777 
+
+
+        /* 两者的区别 */
+        // 当计算属性依赖的数据发生变更时，才会重新执行计算，带有缓存，更加推荐
+        // 只要页面重新渲染，方法重新调用，自然就重新计算，很好理解
+
+        /* watcher侦听器，其实是计算属性computed的底层实现，两者均能实现相同效果 */
+        // 但不是做异步处理的话，推荐使用computed实现，更加简洁
+    </script>
+</body>
+
+</html>

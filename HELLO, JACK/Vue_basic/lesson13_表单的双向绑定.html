@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+    
+</head>
+
+<body>
+    <div id="root"></div>
+    <div id="root2"></div>
+
+    <script>
+        /* 不难发现，双向绑定是数据与表单的value值的绑定，两者相互影响 */
+        const app = Vue.createApp({
+            data() {
+                return {
+                    message: 'input框的双向绑定',
+                    message2: 'textarea框的双向绑定',
+
+                    isCheckboxTrue: true,
+                    // checkbox多个多选框双向绑定的高级使用，准备一个空数组，给每个checkbox一个value值
+                    // 当勾选对应的checkbox时，会将对应的value(字符串)存进空数组中
+                    checkboxValueArr: ['77', 'jack'],
+
+                    // radio单选框双向绑定，准备一个空字符串就行，每个radio也要给上对应的value
+                    // 选中的单选框的value === radioValueStr字符串  双向绑定
+                    radioValueStr: '篮球',
+
+                    selectData: [{ text: 'A', value: { value: 'A' } },  // 数据存储技巧，存一个对象（项目可能会用到）
+                    { text: 'B', value: { value: 'B' } },
+                    { text: 'C', value: { value: 'C' } }
+                    ],
+                    // select下拉框的双向绑定
+                    selectValueArr: '', // 单选，默认值技巧 <option disabled value=''>请选择选项</option>
+                    selectValueArr2: [],
+
+                    // Vue特有的属性，true-value为勾选中时候的值
+                    // toggle: 'true-value & false-value'
+                    toggle: 'yes'
+                };
+            },
+            template: // input双向绑定后，就不用再写value了，message就是value的值 
+                `
+                <div>
+                    {{ message }}
+                    <input v-model='message' />
+                    <br>
+                    {{ message2 }}
+                    <textarea v-model='message2' />
+                    <br>
+                    checkbox 多选框的双向绑定:
+                    {{ isCheckboxTrue }}
+                    <input type='checkbox' v-model='isCheckboxTrue' />
+                </div>
+
+                <div>
+                    {{ radioValueStr }}
+                    1<input type="radio" v-model='radioValueStr' value='唱' />
+                    2<input type="radio" v-model='radioValueStr' value='篮球' />
+                    3<input type="radio" v-model='radioValueStr' value='跳' />
+                </div>
+
+                <div>
+                    {{ checkboxValueArr }}
+                    1<input type="checkbox" v-model='checkboxValueArr' value='jack' />
+                    2<input type="checkbox" v-model='checkboxValueArr' value='rose' />
+                    3<input type="checkbox" v-model='checkboxValueArr' value='77' />
+                </div>
+
+                <br/>
+
+                <div>
+                    {{ selectValueArr }}
+                    <select v-model='selectValueArr'>
+                        <option disabled value=''>请选择选项</option>
+                        <option v-for='item in selectData' :value='item.value'>{{ item.text }}</option>
+                    </select>
+                </div>
+                <div>
+                    {{ selectValueArr2 }}
+                    <select multiple v-model='selectValueArr2'>
+                        <option v-for='item in selectData' :value='item.value'>{{ item.text }}</option>
+                    </select>
+                </div>
+
+                {{ toggle }}
+                <input
+                type="checkbox"
+                v-model="toggle"
+                true-value="yes"
+                false-value="no" />
+
+
+            `
+        });
+
+        const vm = app.mount('#root')
+    </script>
+
+    <script>
+        /* input框的 .lazy 修饰符，只有当输入框失去焦点的时候，才更新数据。相当于 onblur */
+            // 数据和页面的联动变懒了，但是明显性能变高了
+        /* .number 修饰符，输入框内容变化时，先装为数值类型再存入数据，否则数据拿到的是字符串 */
+        /* .trim修饰符，先将输入框内容的开头结尾的空格/空白去除掉，再存入数据 */
+        const app2 = Vue.createApp({
+            data() {
+                return {
+                    message: ''
+                };
+            },
+            template:
+            `   
+                {{ typeof(message) }}    
+                <input v-model.lazy.number='message' type='number' /><br>
+                <input v-model='message' />
+                {{ message }}
+            `
+        })
+
+        const vm2 = app2.mount('#root2')
+    </script>
+</body>
+
+</html>

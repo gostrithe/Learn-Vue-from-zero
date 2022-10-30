@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/3.2.40/vue.global.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script>
+        const Component = {
+            data() {
+                return {
+                    count: 2
+                };
+            },
+            methods: {
+                handler() {
+                    this.count = Math.pow(this.count, 2);
+                }
+            },
+            /* 在子组件中用props来接收传递过来的值 */
+            // props: ['passValue', 'passValue2'],  // 静态传值的时候注意字符串写法
+
+            /* 传值校验：校验失败则报出黄色警告 */
+            // props: { passValue2: String }, // 期待的传递字符串类型的值过来
+            props: {
+                passValue2: { // passValue2接收传递过来的数据
+                    type: Boolean, // -- 期待接收数据的类型，为布尔值
+                    // required: true, // -- 该数据是否必须传过来，是
+                    default: 'jack',  // -- 默认值，就是说没传给我的时候，采取的默认值
+                    validator: function (value) {  // -- validator校验器, 形参接收的是传递过来的值
+                        return value < 1000; // return值为true则通过校验，否则给出黄色警告
+                    }
+                }
+            },
+            template: '<div @click="handler">{{count}} {{ passValue2 }}{{ typeof(passValue2) }}</div>'
+        };
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    success: 777
+                };
+            },
+            components: { Component },
+
+            template:  // 在父组件的子组件标签上通过属性传值, 注意静态传值传递的是字符串
+                `
+                <div>
+                    <Component passValue='成功' :passValue2='success' />
+                </div>
+            `
+        });
+
+        const vm = app.mount('#root')
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script>
+        Vue.createApp({  // 创建一个Vue实例
+            template: '<div>hello world!</div>'  // template模板
+        }).mount('#root');  // 作用于#root元素
+
+        /* 
+            相当于
+            <div id="root"> <div>hello world!</div> </div>
+        */
+
+
+
+
+        Vue.createApp({
+            data() {  // 数据，return变量，template中可以拿到
+                return {
+                    content: 1
+                };
+            },
+            mounted() {  // mounted自动调用
+                setInterval(() => {
+                    // this.$data.content += 1;
+                    this.content += 1;
+                }, 1000);
+            },
+            template: '<div>{{ content }}</div>'  // {{ 这里为js表达式 }} {{}}为插值表达式
+        }).mount('#root')
+    </script>
+</body>
+
+</html>

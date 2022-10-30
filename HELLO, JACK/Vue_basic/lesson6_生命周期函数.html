@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <!-- 如果不写template模板，则把根元素里面的innerHTML作为模板使用 -->
+    <!-- <div id="root"><div>{{message}}</div></div> -->
+
+    <script>
+        /* 生命周期lifeCircle函数：在 某一时刻 会 自动执行 的函数 */
+        // 钩子 ==> 声明周期函数
+        const app = Vue.createApp({
+            data() {
+                return {
+                    message: 'hello world'
+                };
+            },
+
+            /* 自动执行 */
+            // 创建实例之前
+            beforeCreate() {
+                console.log('beforeCreate');
+            },
+            // 创建实例完成
+            created() {
+                console.log('created');
+            },
+            // 组件内容被渲染到页面之前（模板template被编译成render函数完成）
+            beforeMount() {
+                console.log('beforeMount');
+                console.log(document.getElementById('root').innerHTML);  // 没有东西
+            },
+            // 组件内容被渲染到页面完成，(挂载完成，钩子勾上)
+            mounted() {
+                console.log('mounted');
+                console.log(document.getElementById('root').innerHTML);  // <div>hello world</div>
+            },
+            // 当数据发生变化时，会立即自动执行
+            beforeUpdate() {
+                console.log('beforeUpdate');
+                console.log(document.getElementById('root').innerHTML);  // <div>hello world</div>
+            },
+            // 当数据发生变化，且页面重新渲染re-rendered完成后执行
+            updated() {
+                console.log('undated');
+                console.log(document.getElementById('root').innerHTML);  // <div>dataUpdated</div>
+            },
+            // 当Vue应用失效时，即实例app调用了unmount(),不再挂载。
+            beforeUnmount() {
+                console.log('beforeUnmount');
+                console.log(document.getElementById('root').innerHTML);  // <div>dataUpdated</div>
+            },
+            // 当Vue应用失效时，且dom销毁完成
+            unmounted() {
+                console.log('unmounted');
+                console.log(document.getElementById('root').innerHTML);  // 什么也没有了
+            },
+
+            template: '<div>{{message}}</div>'
+        });
+        const vm = app.mount('#root');
+
+        setTimeout(() => {
+            vm.$data.message = 'dataUpdated';
+        }, 2000);
+        setTimeout(() => {
+            app.unmount();
+        }, 3000);
+    </script>
+</body>
+
+</html>

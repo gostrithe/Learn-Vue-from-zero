@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/3.2.40/vue.global.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script>
+        /* 传递多个数据 */
+        // 把数据都写在一个里面 params: {a: 123, b: 321, c: 1234567}
+        // 使用<Component v-bind='params' /> 或 :='params'
+            // 就相当于<Component :a='params.a' :b='params.b' :c='params.c' />
+        // 最后接收即可 props: ['a', 'b', 'c']          
+            // 注意接收的不是传过来的对象params，直接写里面的key
+                    
+
+        /* 单项数据流 */
+        // 在Vue中，子组件可以使用父组件传递过来的数据，但是不能修改父组件的数据
+            // 假如多个子组件同时使用了父组件传递过来的数据，而有一个子组件能修改父组件的数据，那么其他子组件接收到父组件的值也会跟着发生变化，显然这是不允许的
+
+        /* 命名注意事项 */
+        // 在父组件中，标签内属性命名一般使用 烤串式命名 
+        // 但是在子组件中，想要接收一个烤串式属性的值时候，由于js代码-表示减法运算，因此在接收的时候要手动改为 小驼峰命名
+        const Component = {
+            data() {
+                return {
+                    count: 2
+                };
+            },
+            methods: {
+                handler() {
+                    this.count = Math.pow(this.count, 2);
+                }
+            },
+            props: ['a', 'b', 'c'],
+            template: '<di>{{ a }} {{ b }} {{ c }}</div>'
+            // props: ['aValue', 'bValue', 'cValue'],
+            // template: '<di>{{ aValue }} {{ aValue }} {{ cValue }}</div>'
+        };
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    params: {
+                        a: 123,
+                        b: 321,
+                        c: 1234567
+                    }
+                }
+                // return {
+                //     a: 123,
+                //     b: 321,
+                //     c: 1234567
+                // };
+            },
+            components: { Component },
+            template:  
+                `
+                <div>
+                    <Component v-bind='params' />
+                </div>
+            `
+                // <Component :aValue='a' :bValue='b' :cValue='c' />
+        });
+
+        const vm = app.mount('#root')
+    </script>
+</body>
+
+</html>

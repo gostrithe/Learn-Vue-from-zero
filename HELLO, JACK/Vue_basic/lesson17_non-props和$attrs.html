@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/3.2.40/vue.global.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script>
+        /* 
+            non-props
+                -- 就是说没用props去接收父组件传递下来的属性(数据)
+
+            $attrs
+                -- 那些穿透属性会存放在 $attrs 对象中，子组件不接收也能使用
+        */
+
+        const app = Vue.createApp({
+            template:
+                `
+                <div>
+                    <comp lolRank='master' lolName='CBCestbon' />
+                </div>
+            `
+        });
+
+        app.component('comp', {
+            // props: ['lolRank'],  // 如果接收了，则子组件标签上不会继承父组件上的属性。
+            mounted() {
+                console.log(this.$attrs);
+            },
+            // inheritAttrs: false,  // 可以使用inheritAttrs选择继不继承父组件上的属性。
+
+            // template:  // 如果模板最外层只有一个标签，且不使用props去接收父组件传递过来的属性
+            //            // 那么父组件上的属性就会穿透给子组件
+            //            // <div lolrank="master">i am a component</div>
+            // `
+            // <div>i am a component</div>
+            // `
+
+            template: 
+                `
+                <div v-bind='$attrs'>i am a component</div>
+                <div :lolRank='$attrs.lolRank'>i am a component</div>
+                <div>i am a component</div>
+            `
+        });
+
+        const vm = app.mount('#root')
+    </script>
+</body>
+
+</html>

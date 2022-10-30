@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/3.2.40/vue.global.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script>
+        /* 使用app.component('componentName', {})定义一个全局组件 */
+        // 全局注册的组件可以在此应用的任意组件的模板中使用
+        // 全局组件谁都可以用，但是性能不高，他一直挂载在app上面的
+
+        // 定义局部组件：
+            // 局部注册的组件在后代组件中并不可用。注册后仅在当前组件可用，而在任何的子组件或更深层的子组件中都不可用。
+            // 其实就是一个对象。
+            // 需要在父组件中，使用components: { counter: Counter, 'HelloWorld': HelloWorld}
+                                // 去注册组件
+        const AnotherComponent = {  // 注意命名形式
+            data() {
+                return {
+                    count: 0
+                }
+            },
+            template: '<div>{{count}}</div>'
+        };
+
+        const app = Vue.createApp({
+            components: { AnotherComponent, HelloWorld },
+            template: 
+            `
+                <div>
+                    <AnotherComponent />
+                    <HelloWorld />
+                    <i-am-a-component />
+                </div>
+            `
+        });
+
+        app.component('i-am-a-component', {}); // 注意命名形式
+
+        const vm = app.mount('#root')
+
+    </script>
+</body>
+
+</html>
