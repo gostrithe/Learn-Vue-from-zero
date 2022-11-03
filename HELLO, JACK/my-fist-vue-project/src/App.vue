@@ -1,85 +1,62 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
+  <div class="docker">
+    <!-- CSS编码 BEM命名规则 -->
+    <!-- block__element--modifier -->
+    <div class="docker__item docker__item--active">
+      <div class="iconfont">&#xe608;</div> 
+      <div class="docker__tittle">首页</div>
     </div>
-  </header>
-
-  <RouterView />
+    <div class="docker__item">
+      <div class="iconfont">&#xeb34;</div> 
+      <div class="docker__tittle">购物车</div>
+    </div>
+    <div class="docker__item">
+      <div class="iconfont">&#xe645;</div> 
+      <div class="docker__tittle">订单</div>
+    </div>
+    <div class="docker__item">
+      <div class="iconfont">&#xe8a0;</div> 
+      <div class="docker__tittle">我的</div>
+    </div>
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
+<script>
+  export default {
+    
+  }
+</script>
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
+<style lang="scss" scoped>
+  .docker {
     display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+    position: absolute;
+    box-sizing: border-box;
+    padding: 0 .18rem;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: .49rem;
+    border-top: 1px solid #F1F1F1;
+    &__item {
+      flex: 1;
+      text-align: center;
+      .iconfont {
+        margin-top: .05rem;
+        margin-bottom: -0.04rem;
+        font-size: .18rem;
+      }
+      &--active {
+        color: #1FA4FC;
+      }
+    }
+    &__tittle {
+    // 浏览器最小字体大小为12px，巧用缩放达到10px
+      font-size: 20px;
+      transform: scale(0.5, 0.5);
+      transform-origin: center top;
+    }
   }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
+  
+  
 </style>
