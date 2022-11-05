@@ -41,3 +41,5 @@ function greedy(tree) {
 }
 console.log('最终结果:', greedy(tree));
 
+
+
